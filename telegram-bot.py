@@ -117,8 +117,7 @@ def set_webhook():
     webhook_url = "https://telegramozitbuddybot-a8drckfqemfcfxbv.australiacentral-01.azurewebsites.net/webhook"
     application.bot.set_webhook(url=webhook_url)
 
+
 # Run the bot until you press CTRL+C
 print("Bot is running...")
 # application.run_polling()
-
-https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook?url=https://<your-app-name>.azurewebsites.net/webhook
