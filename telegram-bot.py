@@ -9,6 +9,7 @@ from telegram.ext import (
     CommandHandler,
     ContextTypes,
 )
+from flask import Flask, request
 
 
 # Load environment variables from .env file
@@ -95,6 +96,28 @@ application.add_handler(start_handler)
 chat_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), chat)
 application.add_handler(chat_handler)
 
+app = Flask(__name__)
+
+
+@app.route("/")
+def home():
+    return "Bot is running!"
+
+
+@app.route("/webhook", methods=["POST"])
+def telegram_webhook():
+    update = Update.de_json(request.get_json(force=True), application.bot)
+    application.process_update(update)
+    return "ok"
+
+
+# Set webhook at startup (or do it once manually)
+@app.before_first_request
+def set_webhook():
+    webhook_url = "https://telegramozitbuddybot-a8drckfqemfcfxbv.australiacentral-01.azurewebsites.net/webhook"
+    application.bot.set_webhook(url=webhook_url)
+
+
 # Run the bot until you press CTRL+C
 print("Bot is running...")
-application.run_polling()
+# application.run_polling()
